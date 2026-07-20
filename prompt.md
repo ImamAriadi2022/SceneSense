@@ -1,70 +1,286 @@
-Continue implementing the existing SceneSense project.
+You are continuing the existing SceneSense project.
 
-IMPORTANT:
-Do NOT recreate the project.
-Do NOT regenerate existing files unless they are incomplete.
-Analyze the current project first, identify missing implementations, then continue from the current state.
+The project structure, dataset, and source code already exist.
 
-Your workflow:
+DO NOT recreate the project.
 
-1. Scan the entire project.
-2. Determine which files are incomplete.
-3. Report your findings.
-4. Continue implementing only unfinished parts.
+DO NOT regenerate files unless they contain bugs.
+
+=====================================================
+OBJECTIVE
+=====================================================
+
+Your goal is to review the entire project, automatically fix every issue, install missing dependencies if possible, train the model, evaluate it, export all required models, perform inference, and leave the project in a fully completed state.
+
+Do not stop after reviewing.
+
+Do not stop after fixing.
+
+Continue until the whole pipeline has successfully finished.
+
+=====================================================
+STEP 1 — PROJECT AUDIT
+=====================================================
+
+Analyze every file.
+
+Review:
+
+- train.py
+- inference.py
+- download_dataset.py
+- notebook.ipynb
+- requirements.txt
+- README.md
+
+Inside src:
+
+- config.py
+- dataset.py
+- augmentation.py
+- model.py
+- callbacks.py
+- trainer.py
+- evaluator.py
+- exporter.py
+- utils.py
+
+Check:
+
+✓ syntax
+✓ imports
+✓ module dependencies
+✓ incorrect TensorFlow API
+✓ incorrect keras API
+✓ missing functions
+✓ wrong paths
+✓ invalid callbacks
+✓ incorrect dataset loading
+✓ incorrect dataset split
+✓ incorrect augmentation
+✓ model architecture
+✓ optimizer
+✓ loss function
+✓ metrics
+✓ export logic
+✓ inference logic
+
+If anything is wrong:
+
+FIX IT AUTOMATICALLY.
+
+Do not only explain.
+
+=====================================================
+STEP 2 — VERIFY DATASET
+=====================================================
+
+Verify the Intel Image Classification dataset.
+
+Expected structure:
+
+dataset/
+    raw/
+        buildings/
+        forest/
+        glacier/
+        mountain/
+        sea/
+        street/
+
+Verify:
+
+- all folders exist
+- images are readable
+- labels are correct
+- no broken images
+- dataset statistics
+
+Fix any issue automatically.
+
+=====================================================
+STEP 3 — VERIFY ENVIRONMENT
+=====================================================
+
+Check Python environment.
+
+Verify:
+
+TensorFlow
+
+NumPy
+
+Matplotlib
+
+Pillow
+
+Scikit-learn
+
+TensorFlowJS
+
+If packages are missing:
+
+Install them automatically whenever possible.
+
+=====================================================
+STEP 4 — RUN TRAINING
+=====================================================
+
+Execute the complete training pipeline.
 
 Requirements:
 
-- Do not overwrite working code.
-- Do not delete files.
-- Preserve project architecture.
-- Keep all code modular.
-- Use TensorFlow best practices.
-- Ensure every Python file is executable.
+Use GPU if available.
 
-Implementation order:
+Otherwise continue with CPU.
 
-1. config.py
-2. dataset.py
-3. augmentation.py
-4. model.py
-5. callbacks.py
-6. trainer.py
-7. evaluator.py
-8. exporter.py
-9. inference.py
-10. train.py
-11. notebook.ipynb
-12. README.md
+Train until completion.
 
-For each completed file:
+Do NOT stop because training takes time.
 
-- verify imports
-- verify syntax
-- verify no placeholder exists
+Use callbacks:
 
-After every implementation:
+- EarlyStopping
+- ReduceLROnPlateau
+- ModelCheckpoint
+- CSVLogger
+- TerminateOnNaN
 
-Run a self-review.
+Save the best model.
 
-Check for:
+=====================================================
+STEP 5 — EVALUATION
+=====================================================
 
-- syntax errors
-- missing imports
-- missing functions
-- incorrect paths
-- TensorFlow compatibility
+After training:
 
-Only continue when the current file is complete.
+Generate
 
-Do NOT stop after creating skeleton code.
+accuracy
 
-Continue implementing until every file is production-ready.
+loss
 
-When implementation finishes:
+confusion matrix
 
-Generate a checklist showing
+classification report
 
-✓ Completed
-⚠ Remaining
+validation metrics
 
-If something cannot be completed automatically, explain exactly why.
+Save every output inside
+
+outputs/
+
+=====================================================
+STEP 6 — EXPORT
+=====================================================
+
+Export automatically to
+
+SavedModel
+
+TensorFlow Lite
+
+TensorFlowJS
+
+Verify exported models.
+
+If export fails,
+
+fix the issue,
+
+retry,
+
+continue.
+
+=====================================================
+STEP 7 — INFERENCE
+=====================================================
+
+Run inference on several sample images.
+
+Print
+
+Predicted class
+
+Confidence
+
+Verify inference works correctly.
+
+=====================================================
+STEP 8 — NOTEBOOK
+=====================================================
+
+Ensure notebook.ipynb is complete.
+
+Every section must execute correctly.
+
+No missing outputs.
+
+No placeholder code.
+
+=====================================================
+STEP 9 — FINAL VALIDATION
+=====================================================
+
+Perform a final audit.
+
+Check:
+
+✓ project builds
+
+✓ training works
+
+✓ inference works
+
+✓ export works
+
+✓ notebook works
+
+✓ README is accurate
+
+✓ requirements are complete
+
+✓ no syntax errors
+
+✓ no missing imports
+
+=====================================================
+FINAL REPORT
+=====================================================
+
+At the end provide only:
+
+PROJECT STATUS
+
+Completed:
+✔ ...
+
+Fixed:
+✔ ...
+
+Training Accuracy:
+...
+
+Validation Accuracy:
+...
+
+Test Accuracy:
+...
+
+Exported Models:
+✔ SavedModel
+✔ TFLite
+✔ TFJS
+
+Inference:
+✔ Success
+
+Remaining Issues:
+
+If none:
+
+Print
+
+PROJECT COMPLETED SUCCESSFULLY
+
+Do not stop until every possible issue has been fixed automatically.

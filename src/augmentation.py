@@ -1,8 +1,10 @@
 import tensorflow as tf
 
+from src.config import Config
+
 
 class AugmentationPipeline:
-    def __init__(self, config) -> None:
+    def __init__(self, config: Config) -> None:
         self.config = config
         self._build_pipeline()
 

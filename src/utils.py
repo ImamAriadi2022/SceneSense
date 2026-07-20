@@ -71,5 +71,5 @@ def load_image_for_inference(
     img: tf.Tensor = tf.io.read_file(image_path)
     img = tf.image.decode_image(img, channels=3, expand_animations=False)
     img = tf.image.resize(img, target_size)
-    img = tf.cast(img, tf.float32) / 255.0
+    img = tf.cast(img, tf.float32)
     return np.expand_dims(img.numpy(), axis=0)

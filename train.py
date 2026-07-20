@@ -41,11 +41,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    config = Config()
+    config_kwargs = {}
     if args.epochs:
-        config = Config(EPOCHS=args.epochs)
+        config_kwargs["EPOCHS"] = args.epochs
     if args.batch_size:
-        config = Config(BATCH_SIZE=args.batch_size)
+        config_kwargs["BATCH_SIZE"] = args.batch_size
+    config = Config(**config_kwargs)
 
     set_seed(config.RANDOM_SEED)
     timestamp = get_timestamp()

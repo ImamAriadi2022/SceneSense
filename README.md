@@ -30,7 +30,7 @@ jupyter>=1.0.0
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/SceneSense.git
+git clone https://github.com/ImamAriadi2022/SceneSense.git
 cd SceneSense
 pip install -r requirements.txt
 ```
