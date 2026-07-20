@@ -4,10 +4,10 @@ from typing import Tuple
 
 @dataclass(frozen=True)
 class Config:
-    IMAGE_SIZE: Tuple[int, int] = (150, 150)
-    BATCH_SIZE: int = 32
+    IMAGE_SIZE: Tuple[int, int] = (128, 128)
+    BATCH_SIZE: int = 64
     EPOCHS: int = 50
-    LEARNING_RATE: float = 0.001
+    LEARNING_RATE: float = 0.0005
     RANDOM_SEED: int = 42
     DATASET_PATH: str = "dataset"
     OUTPUT_PATH: str = "outputs"
@@ -24,5 +24,5 @@ class Config:
     PATIENCE_LR: int = 5
     LR_FACTOR: float = 0.5
     MIN_LR: float = 1e-7
-    MODEL_INPUT_SHAPE: Tuple[int, ...] = field(default_factory=lambda: (150, 150, 3))
+    MODEL_INPUT_SHAPE: Tuple[int, ...] = field(default_factory=lambda: (128, 128, 3))
     NUM_CLASSES: int = 6

@@ -66,7 +66,7 @@ def plot_history(
 
 def load_image_for_inference(
     image_path: str,
-    target_size: tuple = (150, 150),
+    target_size: tuple = (128, 128),
 ) -> np.ndarray:
     img: tf.Tensor = tf.io.read_file(image_path)
     img = tf.image.decode_image(img, channels=3, expand_animations=False)

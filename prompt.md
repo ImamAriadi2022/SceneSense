@@ -1,286 +1,294 @@
-You are continuing the existing SceneSense project.
+Perform a complete audit of the existing SceneSense project against the official Dicoding Image Classification Submission requirements.
 
-The project structure, dataset, and source code already exist.
+DO NOT modify any project files.
 
-DO NOT recreate the project.
+DO NOT train the model.
 
-DO NOT regenerate files unless they contain bugs.
+DO NOT install packages.
 
-=====================================================
+Your task is ONLY to audit the project and generate a comprehensive audit report.
+
+=========================================================
 OBJECTIVE
-=====================================================
+=========================================================
 
-Your goal is to review the entire project, automatically fix every issue, install missing dependencies if possible, train the model, evaluate it, export all required models, perform inference, and leave the project in a fully completed state.
+Create a file named:
 
-Do not stop after reviewing.
+RESULT.md
 
-Do not stop after fixing.
+This report must evaluate whether the current project already satisfies every mandatory and recommended requirement.
 
-Continue until the whole pipeline has successfully finished.
+Be extremely strict.
 
-=====================================================
-STEP 1 — PROJECT AUDIT
-=====================================================
+Do not assume something is correct.
 
-Analyze every file.
+Verify everything from the source code and project structure.
 
-Review:
+=========================================================
+AUDIT CHECKLIST
+=========================================================
 
-- train.py
-- inference.py
-- download_dataset.py
+Evaluate the following.
+
+## 1. Project Structure
+
+Verify:
+
+- README.md
 - notebook.ipynb
 - requirements.txt
-- README.md
+- train.py
+- inference.py
+- src/
+- dataset/
+- outputs/
+- saved_model/
+- tflite/
+- tfjs_model/
 
-Inside src:
+=========================================================
 
-- config.py
-- dataset.py
-- augmentation.py
-- model.py
-- callbacks.py
-- trainer.py
-- evaluator.py
-- exporter.py
-- utils.py
-
-Check:
-
-✓ syntax
-✓ imports
-✓ module dependencies
-✓ incorrect TensorFlow API
-✓ incorrect keras API
-✓ missing functions
-✓ wrong paths
-✓ invalid callbacks
-✓ incorrect dataset loading
-✓ incorrect dataset split
-✓ incorrect augmentation
-✓ model architecture
-✓ optimizer
-✓ loss function
-✓ metrics
-✓ export logic
-✓ inference logic
-
-If anything is wrong:
-
-FIX IT AUTOMATICALLY.
-
-Do not only explain.
-
-=====================================================
-STEP 2 — VERIFY DATASET
-=====================================================
-
-Verify the Intel Image Classification dataset.
-
-Expected structure:
-
-dataset/
-    raw/
-        buildings/
-        forest/
-        glacier/
-        mountain/
-        sea/
-        street/
+## 2. Dataset
 
 Verify:
 
-- all folders exist
-- images are readable
-- labels are correct
-- no broken images
-- dataset statistics
+- Dataset exists
+- Number of images
+- Number of classes
+- Dataset name
+- Dataset source
+- Dataset is NOT Rock Paper Scissors
+- Dataset is NOT Chest X-Ray
+- Dataset contains at least 1000 images
+- Dataset has at least 3 classes
+- Dataset structure is correct
 
-Fix any issue automatically.
+=========================================================
 
-=====================================================
-STEP 3 — VERIFY ENVIRONMENT
-=====================================================
-
-Check Python environment.
+## 3. Data Pipeline
 
 Verify:
 
-TensorFlow
+- Train split
+- Validation split
+- Test split
+- Shuffle
+- Random seed
+- Data loading
+- Data preprocessing
+- Data augmentation
 
-NumPy
+=========================================================
 
-Matplotlib
+## 4. CNN Architecture
 
-Pillow
+Verify that the model uses
 
-Scikit-learn
+- Sequential
+- Conv2D
+- Pooling Layer
+- Dense
+- Softmax
+- Dropout
+- BatchNormalization
 
-TensorFlowJS
+=========================================================
 
-If packages are missing:
+## 5. Training
 
-Install them automatically whenever possible.
+Verify
 
-=====================================================
-STEP 4 — RUN TRAINING
-=====================================================
-
-Execute the complete training pipeline.
-
-Requirements:
-
-Use GPU if available.
-
-Otherwise continue with CPU.
-
-Train until completion.
-
-Do NOT stop because training takes time.
-
-Use callbacks:
-
+- Optimizer
+- Loss Function
+- Metrics
+- Callback
 - EarlyStopping
 - ReduceLROnPlateau
 - ModelCheckpoint
 - CSVLogger
 - TerminateOnNaN
 
-Save the best model.
+=========================================================
 
-=====================================================
-STEP 5 — EVALUATION
-=====================================================
+## 6. Evaluation
 
-After training:
+Verify
 
-Generate
+- Accuracy Plot
+- Loss Plot
+- Confusion Matrix
+- Classification Report
 
-accuracy
+=========================================================
 
-loss
+## 7. Export
 
-confusion matrix
-
-classification report
-
-validation metrics
-
-Save every output inside
-
-outputs/
-
-=====================================================
-STEP 6 — EXPORT
-=====================================================
-
-Export automatically to
+Verify
 
 SavedModel
 
 TensorFlow Lite
 
-TensorFlowJS
+TensorFlow JS
 
-Verify exported models.
+labels.txt
 
-If export fails,
+=========================================================
 
-fix the issue,
+## 8. Inference
 
-retry,
+Verify
 
-continue.
+Inference script exists
 
-=====================================================
-STEP 7 — INFERENCE
-=====================================================
+Loads model correctly
 
-Run inference on several sample images.
+Predicts image
 
-Print
+Returns class
 
-Predicted class
+Returns confidence
 
-Confidence
+=========================================================
 
-Verify inference works correctly.
+## 9. Notebook
 
-=====================================================
-STEP 8 — NOTEBOOK
-=====================================================
+Verify
 
-Ensure notebook.ipynb is complete.
+Notebook executes correctly
 
-Every section must execute correctly.
+Markdown explanations exist
 
-No missing outputs.
+Outputs are displayed
 
-No placeholder code.
+No placeholder code
 
-=====================================================
-STEP 9 — FINAL VALIDATION
-=====================================================
+=========================================================
 
-Perform a final audit.
+## 10. Code Quality
 
-Check:
+Verify
 
-✓ project builds
+PEP8
 
-✓ training works
+Type hints
 
-✓ inference works
+Docstrings
 
-✓ export works
+Modular architecture
 
-✓ notebook works
+No duplicated code
 
-✓ README is accurate
+No TODO
 
-✓ requirements are complete
+No placeholder implementation
 
-✓ no syntax errors
+=========================================================
 
-✓ no missing imports
+## 11. Dicoding Mandatory Requirements
 
-=====================================================
-FINAL REPORT
-=====================================================
+Evaluate every requirement one by one.
 
-At the end provide only:
+Example:
 
-PROJECT STATUS
+| Requirement | Status | Evidence |
+|-------------|--------|----------|
+| Dataset >1000 | PASS | xxxx |
+| Train/Test/Validation | PASS | xxxx |
+| Sequential | PASS | xxxx |
+| Conv2D | PASS | xxxx |
+| Pooling | PASS | xxxx |
+| Accuracy >85% | UNKNOWN / PASS / FAIL | xxxx |
+| SavedModel | PASS | xxxx |
+| TF Lite | PASS | xxxx |
+| TFJS | PASS | xxxx |
 
-Completed:
-✔ ...
+=========================================================
 
-Fixed:
-✔ ...
+## 12. Dicoding Recommended Requirements
 
-Training Accuracy:
-...
+Evaluate
 
-Validation Accuracy:
-...
+Callback
 
-Test Accuracy:
-...
+Dataset >10000
 
-Exported Models:
-✔ SavedModel
-✔ TFLite
-✔ TFJS
+Accuracy >95%
 
-Inference:
-✔ Success
+More than 3 classes
 
-Remaining Issues:
+Inference
 
-If none:
+Professional README
 
-Print
+Professional project structure
 
-PROJECT COMPLETED SUCCESSFULLY
+=========================================================
 
-Do not stop until every possible issue has been fixed automatically.
+## 13. Potential Reviewer Issues
+
+Predict every possible reason why the submission could be rejected.
+
+For each issue provide:
+
+- Severity
+- Explanation
+- File involved
+- Recommended fix
+
+=========================================================
+
+## 14. Final Score Prediction
+
+Predict Dicoding reviewer score.
+
+⭐
+⭐⭐
+⭐⭐⭐
+⭐⭐⭐⭐
+⭐⭐⭐⭐⭐
+
+Explain why.
+
+=========================================================
+
+## 15. Final Verdict
+
+Print one of these:
+
+PROJECT READY FOR SUBMISSION
+
+or
+
+PROJECT NOT READY
+
+=========================================================
+
+RESULT.md FORMAT
+
+Use Markdown.
+
+Include tables.
+
+Include checklists.
+
+Include percentages.
+
+Include a final completion summary.
+
+Example:
+
+Overall Completion:
+92%
+
+Mandatory Requirements:
+10/10 PASS
+
+Recommended Requirements:
+4/5 PASS
+
+Submission Readiness:
+READY
+
+Expected Dicoding Score:
+⭐⭐⭐⭐⭐
