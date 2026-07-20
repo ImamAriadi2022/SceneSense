@@ -107,8 +107,8 @@ SceneSense/
 
 | Metric    | Value |
 |-----------|-------|
-| Test Accuracy | ≥ 85% |
-| Test Loss     | Low   |
+| Test Accuracy | 78.44% |
+| Test Loss     | 0.5990 |
 
 ## Exported Formats
 

@@ -23,7 +23,7 @@ class Exporter:
 
     def export_savedmodel(self, model: tf.keras.Model) -> None:
         path = ensure_dir(self.config.MODEL_PATH)
-        model.save(path)
+        model.export(path)
         print(f"SavedModel exported to: {path}")
 
     def export_tflite(

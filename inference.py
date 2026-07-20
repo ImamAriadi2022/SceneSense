@@ -11,6 +11,16 @@ from src.config import Config
 from src.utils import load_image_for_inference
 
 
+def load_savedmodel(model_path: str) -> tf.keras.Model:
+    try:
+        return tf.keras.models.load_model(model_path)
+    except ValueError:
+        layer = tf.keras.layers.TFSMLayer(model_path, call_endpoint='serving_default')
+        inputs = tf.keras.Input(shape=Config().MODEL_INPUT_SHAPE)
+        outputs = layer(inputs)
+        return tf.keras.Model(inputs, outputs)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run inference with SceneSense model")
     parser.add_argument(
@@ -40,9 +50,12 @@ def load_labels(path: str) -> list:
 
 
 def predict_with_savedmodel(model_path: str, image_path: str, class_names: list) -> None:
-    model = tf.keras.models.load_model(model_path)
+    model = load_savedmodel(model_path)
     input_image = load_image_for_inference(image_path, target_size=Config().IMAGE_SIZE)
-    preds = model.predict(input_image, verbose=0)[0]
+    preds = model.predict(input_image, verbose=0)
+    if isinstance(preds, dict):
+        preds = list(preds.values())[0]
+    preds = np.array(preds).squeeze()
     predicted_idx = int(np.argmax(preds))
     confidence = float(preds[predicted_idx])
     predicted_class = class_names[predicted_idx] if class_names else str(predicted_idx)
