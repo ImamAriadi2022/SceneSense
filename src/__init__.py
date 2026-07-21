@@ -1,3 +1,9 @@
+"""SceneSense - Scene classification toolkit.
+
+Provides a complete pipeline for dataset preparation, model building,
+training, evaluation, and export for scene recognition tasks.
+"""
+
 from src.config import Config
 from src.dataset import SceneSenseDataset
 from src.augmentation import AugmentationPipeline

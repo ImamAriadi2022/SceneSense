@@ -9,6 +9,11 @@ import tensorflow as tf
 
 
 def set_seed(seed: int = 42) -> None:
+    """Set random seeds for reproducibility.
+
+    Args:
+        seed: Random seed value. Defaults to 42.
+    """
     random.seed(seed)
     np.random.seed(seed)
     tf.random.set_seed(seed)
@@ -16,11 +21,24 @@ def set_seed(seed: int = 42) -> None:
 
 
 def ensure_dir(path: str) -> str:
+    """Create a directory if it does not exist.
+
+    Args:
+        path: Directory path to ensure exists.
+
+    Returns:
+        The input path string.
+    """
     os.makedirs(path, exist_ok=True)
     return path
 
 
 def get_timestamp() -> str:
+    """Return the current datetime as a compact string.
+
+    Returns:
+        A string in the format YYYYMMDD_HHMMSS.
+    """
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
@@ -29,6 +47,15 @@ def plot_history(
     output_path: str = "outputs",
     timestamp: str = "",
 ) -> None:
+    """Plot training and validation accuracy / loss curves.
+
+    Saves two PNG figures (accuracy and loss) to the output directory.
+
+    Args:
+        history: History object from a Keras model.fit() call.
+        output_path: Directory to save the plot images.
+        timestamp: Optional timestamp suffix for filenames.
+    """
     ensure_dir(output_path)
 
     acc: List[float] = history.history["accuracy"]
@@ -67,8 +94,17 @@ def plot_history(
 
 def load_image_for_inference(
     image_path: str,
-    target_size: tuple = (128, 128),
+    target_size: tuple = (150, 150),
 ) -> np.ndarray:
+    """Load and preprocess a single image for model inference.
+
+    Args:
+        image_path: Path to the image file.
+        target_size: Desired (height, width) for resizing.
+
+    Returns:
+        A numpy array of shape (1, height, width, 3).
+    """
     img: tf.Tensor = tf.io.read_file(image_path)
     img = tf.image.decode_image(img, channels=3, expand_animations=False)
     img = tf.image.resize(img, target_size)

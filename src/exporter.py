@@ -1,4 +1,5 @@
 import os
+import warnings
 from typing import List
 
 import tensorflow as tf
@@ -8,6 +9,12 @@ from src.utils import ensure_dir
 
 
 class Exporter:
+    """Exports a trained model in multiple formats.
+
+    Supports SavedModel, TensorFlow Lite, TensorFlow.js, and plain
+    label files.
+    """
+
     def __init__(self, config: Config) -> None:
         self.config = config
 
@@ -16,12 +23,23 @@ class Exporter:
         model: tf.keras.Model,
         class_names: List[str],
     ) -> None:
+        """Export the model in all supported formats.
+
+        Args:
+            model: The trained Keras model.
+            class_names: List of class label names to save as labels.txt.
+        """
         self.export_savedmodel(model)
         self.export_tflite(model, class_names)
         self.export_tfjs(model)
         self.save_labels(class_names)
 
     def export_savedmodel(self, model: tf.keras.Model) -> None:
+        """Export the model as a TensorFlow SavedModel.
+
+        Args:
+            model: The trained Keras model.
+        """
         path = ensure_dir(self.config.MODEL_PATH)
         model.export(path)
         print(f"SavedModel exported to: {path}")
@@ -31,6 +49,13 @@ class Exporter:
         model: tf.keras.Model,
         class_names: List[str],
     ) -> None:
+        """Export the model as a quantized TFLite model.
+
+        Args:
+            model: The trained Keras model.
+            class_names: List of class label names (included for interface
+                consistency; currently unused in conversion).
+        """
         converter = tf.lite.TFLiteConverter.from_keras_model(model)
         converter.optimizations = [tf.lite.Optimize.DEFAULT]
         tflite_model = converter.convert()
@@ -41,15 +66,28 @@ class Exporter:
         print(f"TFLite exported to: {tflite_path}")
 
     def export_tfjs(self, model: tf.keras.Model) -> None:
+        """Export the model as a TensorFlow.js model.
+
+        Requires the tensorflowjs package. Skips export if the package is
+        not installed.
+
+        Args:
+            model: The trained Keras model.
+        """
         try:
             import tensorflowjs as tfjs
             path = ensure_dir(self.config.TFJS_PATH)
             tfjs.converters.save_keras_model(model, path)
             print(f"TFJS exported to: {path}")
         except ImportError:
-            print("tensorflowjs not installed. Skipping TFJS export.")
+            warnings.warn("tensorflowjs not installed. Skipping TFJS export.")
 
     def save_labels(self, class_names: List[str]) -> None:
+        """Save class labels to a text file (one per line).
+
+        Args:
+            class_names: List of class label names.
+        """
         labels_path = os.path.join(self.config.MODEL_PATH, "labels.txt")
         with open(labels_path, "w") as f:
             for name in class_names:

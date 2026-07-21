@@ -10,7 +10,7 @@
 
 **Intel Image Classification Dataset** ([Kaggle](https://www.kaggle.com/datasets/puneet6060/intel-image-classification))
 
-- ~25,000 images
+- 17,034 images (train: 11,923, val: 2,555, test: 2,556)
 - 6 classes: buildings, forest, glacier, mountain, sea, street
 - Split: Train (70%) | Validation (15%) | Test (15%)
 

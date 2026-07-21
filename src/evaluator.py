@@ -15,6 +15,12 @@ from src.utils import ensure_dir
 
 
 class Evaluator:
+    """Evaluates a trained model and produces diagnostic outputs.
+
+    Computes test loss/accuracy, generates a confusion matrix plot, and
+    saves a full classification report.
+    """
+
     def __init__(self, config: Config) -> None:
         self.config = config
         ensure_dir(config.OUTPUT_PATH)
@@ -25,6 +31,16 @@ class Evaluator:
         test_ds: tf.data.Dataset,
         class_names: List[str],
     ) -> Dict[str, float]:
+        """Evaluate the model on the test set and produce diagnostic outputs.
+
+        Args:
+            model: The trained Keras model.
+            test_ds: Test dataset.
+            class_names: List of class label names.
+
+        Returns:
+            A dictionary containing 'loss' and 'accuracy' metrics.
+        """
         loss, accuracy = model.evaluate(test_ds, verbose=1)
         print(f"\nTest Loss: {loss:.4f}")
         print(f"Test Accuracy: {accuracy:.4f}")
@@ -41,6 +57,15 @@ class Evaluator:
         model: tf.keras.Model,
         test_ds: tf.data.Dataset,
     ) -> Tuple[np.ndarray, np.ndarray]:
+        """Compute true labels and predicted labels for the test set.
+
+        Args:
+            model: The trained Keras model.
+            test_ds: Test dataset.
+
+        Returns:
+            A tuple of (y_true, y_pred) numpy arrays.
+        """
         y_true: List[int] = []
         y_pred: List[int] = []
         for images, labels in test_ds:
@@ -55,6 +80,13 @@ class Evaluator:
         y_pred: np.ndarray,
         class_names: List[str],
     ) -> None:
+        """Plot and save a confusion matrix heatmap.
+
+        Args:
+            y_true: Ground-truth labels.
+            y_pred: Predicted labels.
+            class_names: List of class label names for axis ticks.
+        """
         cm = confusion_matrix(y_true, y_pred)
         plt.figure(figsize=(10, 8))
         sns.heatmap(
@@ -78,6 +110,13 @@ class Evaluator:
         y_pred: np.ndarray,
         class_names: List[str],
     ) -> None:
+        """Generate and save a text classification report.
+
+        Args:
+            y_true: Ground-truth labels.
+            y_pred: Predicted labels.
+            class_names: List of class label names.
+        """
         report = classification_report(
             y_true,
             y_pred,

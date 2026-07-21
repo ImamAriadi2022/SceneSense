@@ -9,6 +9,12 @@ from src.config import Config
 
 
 class SceneSenseDataset:
+    """Handles dataset loading, splitting, and statistics for scene images.
+
+    Organises images from a raw directory into train/val/test splits and
+    loads them as TensorFlow Dataset objects.
+    """
+
     def __init__(self, config: Config) -> None:
         self.config = config
         self.class_names: List[str] = list(config.CLASSES)
@@ -17,6 +23,15 @@ class SceneSenseDataset:
         self.test_ds: Optional[tf.data.Dataset] = None
 
     def _get_file_paths(self, data_dir: str) -> Tuple[List[str], List[int]]:
+        """Collect image file paths and their class indices from a directory.
+
+        Args:
+            data_dir: Path to the root directory containing class subdirectories.
+
+        Returns:
+            A tuple of (paths, labels) where paths is a list of image file
+            paths and labels is a list of corresponding integer class indices.
+        """
         paths: List[str] = []
         labels: List[int] = []
         for idx, cls_name in enumerate(self.class_names):
@@ -35,6 +50,13 @@ class SceneSenseDataset:
         labels: List[int],
         target_dir: str,
     ) -> None:
+        """Copy image files into class subdirectories under target_dir.
+
+        Args:
+            paths: List of source image file paths.
+            labels: List of integer class indices corresponding to each path.
+            target_dir: Destination root directory (class folders created inside).
+        """
         for path, label in zip(paths, labels):
             cls_name = self.class_names[label]
             dest_dir = os.path.join(target_dir, cls_name)
@@ -42,6 +64,14 @@ class SceneSenseDataset:
             shutil.copy2(path, os.path.join(dest_dir, os.path.basename(path)))
 
     def split_and_save(self, data_dir: str) -> None:
+        """Split images into train/val/test sets and save to structured directories.
+
+        Args:
+            data_dir: Path to the raw dataset with class subdirectories.
+
+        Raises:
+            ValueError: If no valid image files are found in data_dir.
+        """
         paths, labels = self._get_file_paths(data_dir)
         if not paths:
             raise ValueError(f"No images found in {data_dir}")
@@ -67,6 +97,13 @@ class SceneSenseDataset:
         print(f"Train: {len(train_paths)} | Val: {len(val_paths)} | Test: {len(test_paths)}")
 
     def load_datasets(self) -> None:
+        """Load train, validation, and test datasets from the split directory.
+
+        Populates train_ds, val_ds, and test_ds as TensorFlow Dataset objects.
+
+        Raises:
+            FileNotFoundError: If the train directory does not exist.
+        """
         base = self.config.DATASET_PATH
         train_dir = os.path.join(base, "train")
         val_dir = os.path.join(base, "val")
@@ -101,6 +138,12 @@ class SceneSenseDataset:
         self.class_names = self.train_ds.class_names
 
     def get_dataset_statistics(self) -> Dict[str, int]:
+        """Compute per-class and total image counts for each split.
+
+        Returns:
+            A dictionary mapping split_class keys (e.g. 'train_buildings')
+            and split_total keys (e.g. 'train_total') to image counts.
+        """
         stats = {}
         for split_name in ["train", "val", "test"]:
             split_dir = os.path.join(self.config.DATASET_PATH, split_name)
