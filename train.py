@@ -58,8 +58,15 @@ def main() -> None:
     dataset = SceneSenseDataset(config)
 
     if args.data_dir:
-        print(f"\n[1/7] Splitting dataset from: {args.data_dir}")
-        dataset.split_and_save(args.data_dir)
+        base = config.DATASET_PATH
+        train_dir = os.path.join(base, "train")
+        val_dir = os.path.join(base, "val")
+        test_dir = os.path.join(base, "test")
+        if os.path.isdir(train_dir) and os.path.isdir(val_dir) and os.path.isdir(test_dir):
+            print("\n[1/7] Split dataset already exists. Skipping split.")
+        else:
+            print(f"\n[1/7] Splitting dataset from: {args.data_dir}")
+            dataset.split_and_save(args.data_dir)
     else:
         base = config.DATASET_PATH
         train_dir = os.path.join(base, "train")
@@ -90,7 +97,7 @@ def main() -> None:
 
     print("\n[5/7] Training model...")
     trainer = Trainer(config)
-    history = trainer.train(model, train_ds, val_ds)
+    model, history = trainer.train(model, train_ds, val_ds)
 
     print("\n[6/7] Evaluating model...")
     evaluator = Evaluator(config)

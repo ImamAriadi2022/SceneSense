@@ -97,8 +97,8 @@ SceneSense/
 ├── tflite/
 ├── tfjs_model/
 └── outputs/
-    ├── accuracy.png
-    ├── loss.png
+    ├── accuracy_<timestamp>.png
+    ├── loss_<timestamp>.png
     ├── confusion_matrix.png
     └── classification_report.txt
 ```
@@ -107,8 +107,8 @@ SceneSense/
 
 | Metric    | Value |
 |-----------|-------|
-| Test Accuracy | 78.44% |
-| Test Loss     | 0.5990 |
+| Test Accuracy | 85.29% |
+| Test Loss     | 0.4851 |
 
 ## Exported Formats
 
