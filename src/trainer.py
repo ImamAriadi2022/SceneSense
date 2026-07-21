@@ -1,5 +1,5 @@
 import os
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import tensorflow as tf
 
@@ -14,7 +14,7 @@ class Trainer:
         self.config = config
 
     def _get_last_epoch(self) -> int:
-        csv_path = os.path.join("logs", "training_log.csv")
+        csv_path = os.path.join(self.config.LOG_PATH, "training_log.csv")
         if not os.path.isfile(csv_path):
             return 0
         with open(csv_path) as f:
@@ -23,7 +23,7 @@ class Trainer:
             return 0
         last_line = lines[-1]
         try:
-            return int(last_line.split(",")[0])
+            return int(last_line.split(",")[0]) + 1
         except (ValueError, IndexError):
             return 0
 
@@ -33,10 +33,10 @@ class Trainer:
         train_ds: tf.data.Dataset,
         val_ds: tf.data.Dataset,
         callbacks: Optional[List[tf.keras.callbacks.Callback]] = None,
-    ) -> tf.keras.callbacks.History:
+    ) -> Tuple[tf.keras.Model, tf.keras.callbacks.History]:
         """Run model training with automatic resume support.
 
-        If a checkpoint exists in saved_model/latest_checkpoint.keras,
+        If a checkpoint exists in checkpoints/latest_checkpoint.keras,
         the model is restored and training continues from that epoch.
 
         Args:
@@ -47,14 +47,22 @@ class Trainer:
                 callbacks are created via CallbackFactory.
 
         Returns:
-            A History object containing training metrics per epoch.
+            A tuple of (model, history) where model is the trained/resumed model
+            and history is the History object containing training metrics per epoch.
         """
         if callbacks is None:
             factory = CallbackFactory(self.config)
             callbacks = factory.get_callbacks()
 
-        resume_path = os.path.join(self.config.MODEL_PATH, "latest_checkpoint.keras")
+        resume_path = os.path.join(self.config.CHECKPOINT_PATH, "latest_checkpoint.keras")
         initial_epoch = self._get_last_epoch()
+
+        # Fallback to legacy path config.MODEL_PATH if not found in CHECKPOINT_PATH
+        if not os.path.isfile(resume_path):
+            fallback_path = os.path.join(self.config.MODEL_PATH, "latest_checkpoint.keras")
+            if os.path.isfile(fallback_path):
+                print(f"Latest checkpoint not found in {self.config.CHECKPOINT_PATH}. Using fallback from {self.config.MODEL_PATH}...")
+                resume_path = fallback_path
 
         if os.path.isfile(resume_path) and initial_epoch > 0:
             print(f"Resuming training from epoch {initial_epoch}...")
@@ -70,4 +78,4 @@ class Trainer:
             callbacks=callbacks,
             verbose=1,
         )
-        return history
+        return model, history

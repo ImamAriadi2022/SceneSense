@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass, field
 from typing import Tuple
 
@@ -14,11 +15,13 @@ class Config:
     EPOCHS: int = 50
     LEARNING_RATE: float = 0.001
     RANDOM_SEED: int = 42
-    DATASET_PATH: str = "dataset"
-    OUTPUT_PATH: str = "outputs"
-    MODEL_PATH: str = "saved_model"
-    TFLITE_PATH: str = "tflite"
-    TFJS_PATH: str = "tfjs_model"
+    DATASET_PATH: str = field(default_factory=lambda: os.getenv("SCENESENSE_DATASET_PATH", "dataset"))
+    OUTPUT_PATH: str = field(default_factory=lambda: os.getenv("SCENESENSE_OUTPUT_PATH", "outputs"))
+    MODEL_PATH: str = field(default_factory=lambda: os.getenv("SCENESENSE_MODEL_PATH", "saved_model"))
+    TFLITE_PATH: str = field(default_factory=lambda: os.getenv("SCENESENSE_TFLITE_PATH", "tflite"))
+    TFJS_PATH: str = field(default_factory=lambda: os.getenv("SCENESENSE_TFJS_PATH", "tfjs_model"))
+    CHECKPOINT_PATH: str = field(default_factory=lambda: os.getenv("SCENESENSE_CHECKPOINT_PATH", "checkpoints"))
+    LOG_PATH: str = field(default_factory=lambda: os.getenv("SCENESENSE_LOG_PATH", "logs"))
     CLASSES: Tuple[str, ...] = field(default_factory=lambda: (
         "buildings", "forest", "glacier", "mountain", "sea", "street"
     ))
