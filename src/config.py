@@ -11,7 +11,7 @@ class Config:
     """
     IMAGE_SIZE: Tuple[int, int] = (150, 150)
     BATCH_SIZE: int = 32
-    EPOCHS: int = 100
+    EPOCHS: int = 50
     LEARNING_RATE: float = 0.001
     RANDOM_SEED: int = 42
     DATASET_PATH: str = "dataset"
